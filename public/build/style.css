@@ -1,0 +1,24 @@
+
+.avatar-img {
+    border-radius: 10px;
+}
+
+.chatBox {
+    display: flex;
+    flex-direction: row;
+}
+
+.right-side img {
+    order: 2;
+}
+.right-side p {
+    order: 1;
+}
+
+.left-side img {
+    order: 1;
+}
+
+.left-side p {
+    order: 2;
+}

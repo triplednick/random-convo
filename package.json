@@ -1,0 +1,35 @@
+{
+  "name": "random-convo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/triplednick/random-convo.git"
+  },
+  "author": "nick strad",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/triplednick/random-convo/issues"
+  },
+  "homepage": "https://github.com/triplednick/random-convo#readme",
+  "devDependencies": {
+    "babelify": "^7.3.0",
+    "browserify": "^13.3.0",
+    "gulp": "^3.9.1",
+    "gulp-eslint": "^3.0.1",
+    "gulp-sourcemaps": "^2.4.0",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.8.0"
+  },
+  "dependencies": {
+    "axios": "^0.15.3",
+    "body-parser": "^1.16.0",
+    "express": "^4.14.0",
+    "mustache": "^2.3.0"
+  }
+}
