@@ -2231,19 +2231,12 @@ Chatter.prototype.toString = function () {
 module.exports = Chatter;
 
 },{"axios":1}],29:[function(require,module,exports){
-const Chatter = require('./Chatter');
-const axios = require('axios');
-const Mustache = require('mustache');
+const axios = require('axios'),
+      util = require('./util'),
+      Chatter = require('./Chatter');
 
+/*
 const AVATAR_URL = 'https://api.adorable.io/avatars/46/test';
-
-const DEFAULT_PERSON = {
-    name: 'Jane',
-    surname: 'Doe',
-    gender: 'female',
-    regione: 'United States'
-};
-
 const DEFAULT_OBJ = {
     imgURL: AVATAR_URL,
     chatterData: {
@@ -2253,69 +2246,152 @@ const DEFAULT_OBJ = {
         gender: 'female'
     }
 };
+*/
 
-const promise = axios.get('/getChatter');
-
-let nick;
-
-promise.then(function (person) {
-
-    const personData = person.data;
-
-    nick = new Chatter(personData);
-
-    nick.saySomething().then(function (response) {
-        console.log('say something was success');
-        const data = response.data;
-        const sentence = data['sentence'];
-        renderStache(nick, sentence);
-    }).catch(function (error) {
-        console.log('resolving on client Chatter end with error:' + error);
-        return SENTENCE;
+const interval = setInterval(function () {
+    axios.get('/getChatter').then(function (response) {
+        const { chatterData: chatterData, imgURL: imgURL } = response.data;
+        //console.log('000000');
+        //console.log(chatterData);
+        //console.log(imgURL);
+        util.getMessage(new Chatter({
+            chatterData,
+            imgURL
+        }));
+    }).catch(function (e) {
+        console.log(e);
     });
-}).catch(function (error) {
-    console.log("making nick was error");
-    nick = new Chatter(DEFAULT_OBJ);
-    nick.saySomething().then(function (response) {
-        console.log('say something was success');
-        const data = response.data;
-        const sentence = data['sentence'];
-        renderStache(nick, sentence);
-    }).catch(function (error) {
-        console.log('resolving on client Chatter end with error:' + error);
-        return SENTENCE;
-    });
-});
-let turn = true;
-function renderStache(chatter, sentence) {
+}, 3000);
 
-    const { name: name, imgURL: imgURL, surname: surname } = chatter;
+},{"./Chatter":28,"./util":31,"axios":1}],30:[function(require,module,exports){
+const Mustache = require('mustache');
 
-    const view = {
-        name,
-        imgURL,
-        surname,
-        sentence
+(function () {
+
+    const MODAL_TEMPLATE = '<div class="user-content"><div><span class="modal-full-name">Full name:</span><span class="name-text"> {{name}} {{surname}}</span></div><div><span class="modal-region">Region:</span><span class="region-text"> {{region}}</span></div><div><span class="modal-gender">Gender: </span><span class="gender-text">{{gender}}</span></div></div>';
+
+    const modal = document.getElementById('myModal');
+    const span = document.getElementsByClassName("close")[0];
+
+    //api function used to give an element the ability to open and close modal
+    const showModal = view => {
+
+        const modalHook = document.getElementById('modalHook');
+        modalHook.innerHTML = Mustache.render(MODAL_TEMPLATE, view);;
+        modal.style.display = "block";
     };
 
+    // Close modal if x button is selected
+    span.onclick = () => {
+        modal.style.display = "none";
+    };
+
+    //Close the modal if its open but user clicks outside of it.
+    window.onclick = event => {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    };
+
+    module.exports = {
+        showModal
+    };
+})();
+
+},{"mustache":26}],31:[function(require,module,exports){
+const Mustache = require('mustache');
+const modalHandler = require('./modal');
+
+(function () {
+
+    const MESSAGE_TEMPLATE_LEFT = '<div class="img-container-left"><img class="avatar-img" src={{imgURL}} alt="{{name}} {{surname}} Avatar" height="46" width"46"></img></div><div class="msg-container-right"><p><span>{{sentence}}</span></p></div><div class="blank-spot-right"></div>';
+    const MESSAGE_TEMPLATE_RIGHT = '<div class="blank-spot-left"></div><div class="img-container-right"><img class="avatar-img" src={{imgURL}} alt="{{name}} {{surname}} Avatar" height="46" width"46"></img></div><div class="msg-container-left"><p><span>{{sentence}}</span></p></div>';
+
     const chatBox = document.getElementById('chatBox');
-    const newDiv = document.createElement('div');
+    let side = true;
 
-    if (turn) {
-        turn = false;
-        newDiv.classList.toggle('left-side');
-        const leftSideAvatar = Mustache.render('<img class="avatar-img" src={{imgURL}} alt="{{name}} {{surname}} Avatar" height="46" width"46"></img> <p><span>{{sentence}}</span></p>', view);
-        newDiv.innerHTML = leftSideAvatar;
-        chatBox.insertBefore(newDiv, chatBox.childNodes[0]);
-    } else {
-        turn = true;
-        newDiv.classList.toggle('right-side');
-        const rightSideAvatar = Mustache.render('<div class="right-side"><img class="avatar-img" src={{imgURL}} alt="{{name}} {{surname}} Avatar" height="46" width"46"></img> <p><span>{{sentence}}</span></p></div>', view);
-        newDiv.innerHTML = rightSideAvatar;
-        chatBox.insertBefore(newDiv, chatBox.childNodes[0]);
-    }
-}
+    const capitalizeFirstLetter = string => {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    };
 
-},{"./Chatter":28,"axios":1,"mustache":26}]},{},[29])
+    const getOffsetTop = elem => {
+        var offsetTop = 0;
 
-//# sourceMappingURL=test.js.map
+        do {
+            if (!isNaN(elem.offsetTop)) {
+                offsetTop += elem.offsetTop;
+            }
+        } while (elem = elem.offsetParent);
+
+        return offsetTop;
+    };
+
+    const getOffsetLeft = elem => {
+        var offsetLeft = 0;
+
+        do {
+            if (!isNaN(elem.offsetLeft)) {
+                offsetLeft += elem.offsetLeft;
+            }
+        } while (elem = elem.offsetParent);
+
+        return offsetLeft;
+    };
+
+    const renderStache = (chatter, sentence) => {
+
+        const { name: name, imgURL: imgURL, surname: surname, region: region, gender: gender } = chatter;
+
+        sentence = capitalizeFirstLetter(sentence);
+
+        const view = {
+            name,
+            imgURL,
+            surname,
+            sentence
+        };
+
+        const newDiv = document.createElement('div');
+
+        newDiv.classList.toggle('msg-parent');
+
+        if (side) {
+            side = false;
+            newDiv.innerHTML = Mustache.render(MESSAGE_TEMPLATE_LEFT, view);
+        } else {
+            side = true;
+            newDiv.innerHTML = Mustache.render(MESSAGE_TEMPLATE_RIGHT, view);
+        }
+
+        newDiv.addEventListener('click', e => {
+            modalHandler.showModal({
+                name,
+                surname,
+                region,
+                gender
+            });
+        });
+
+        chatBox.appendChild(newDiv);
+
+        //const offsetTop = getOffsetTop(newDiv);
+        //const offsetLeft = getOffsetLeft(newDiv);
+        //window.scrollTo(offsetLeft, offsetTop);
+    };
+
+    const getMessage = chatter => {
+        chatter.saySomething().then(function (response) {
+            const { sentence } = response.data;
+            console.log('rendering stache with: ' + sentence);
+            renderStache(chatter, sentence);
+        }).catch(function (e) {
+            console.log(e);
+        });
+    };
+
+    module.exports = { getMessage };
+})();
+
+},{"./modal":30,"mustache":26}]},{},[29])
+
+//# sourceMappingURL=script.js.map

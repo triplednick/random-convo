@@ -7,12 +7,12 @@ const watchify = require('watchify');
 const babel = require('babelify');
 
 function compile(watch) {
-  const bundler = watchify(browserify('./src/test.js', { debug: true }).transform(babel));
+  const bundler = watchify(browserify('./src/index.js', { debug: true }).transform(babel));
 
   function rebundle() {
     bundler.bundle()
       .on('error', function(err) {  console.error(err); this.emit('end'); })
-      .pipe(source('test.js'))
+      .pipe(source('script.js'))
       .pipe(buffer())
       .pipe(sourcemaps.init({ loadMaps: true }))
       .pipe(sourcemaps.write('./'))

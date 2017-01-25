@@ -4,15 +4,32 @@
 <head>
   <meta charset="utf-8">
 
-  <title>Eavesdrop a random conversation!</title>
+  <title>Random Conversations!</title>
 
 
   <link rel="stylesheet" href="./build/style.css?v=1.0">
+  <link href="https://fonts.googleapis.com/css?family=Cormorant|Permanent+Marker|Roboto|Frijole" rel="stylesheet">
 </head>
 
 <body>
-    <h1>Test</h1>
-    <div id="chatBox"></div>
-  <script src="./build/test.js"></script>
+    <div class="main-header"><h1>Random Convo</h1></div>
+    <div class="container">
+      <div class="convo-box" id="chatBox"></div>
+    </div>
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+      <!-- Modal content -->
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close">&times;</span>
+          <h1>Avatar Info</h1>
+        </div>
+        <div id="modalHook"></div>
+        </div>
+      </div>
+
+    </div>
+  <script src="./build/script.js"></script>
 </body>
 </html>

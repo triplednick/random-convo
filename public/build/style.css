@@ -1,24 +1,201 @@
+body {
+    background: #485563; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, #485563 , #29323c); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to left, #485563 , #29323c); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */      
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 90vh;
+    align-items: flex-start;
+}
+
+div.main-header {
+    width: 100%;
+    text-align: center;
+}
+
+div.main-header h1 {
+    font-family: 'Frijole', cursive;
+    font-size: 3em;
+    color: rgb(248,248,255);
+}
+
+@media (min-width: 600px) {
+  div.container {
+    margin:auto;
+    width:600px;
+  }
+
+  div.modal-content {
+      width: 600px;
+  }
+
+}
 
 .avatar-img {
     border-radius: 10px;
+    -webkit-box-shadow: 4px 9px 19px -2px rgba(0,0,0,0.66);
+    -moz-box-shadow: 4px 9px 19px -2px rgba(0,0,0,0.66);
+    box-shadow: 4px 9px 19px -2px rgba(0,0,0,0.66);
 }
 
-.chatBox {
+.msg-parent {
     display: flex;
     flex-direction: row;
+    width: 100%;
+    margin-top: 20px;
 }
 
-.right-side img {
-    order: 2;
+.msg-parent:hover {
+    cursor:pointer; 
 }
-.right-side p {
+
+.msg-parent div {
+    margin: 20px 5px 0 5px;
+}
+
+.msg-container-left {
     order: 1;
+    flex-grow: 1;
+    background: rgba(245,222,179, 0.7);
+    border-radius: 10px;
 }
 
-.left-side img {
-    order: 1;
+.msg-container-right p::first-letter, .msg-container-left p::first-letter {
+  font-size: 2em;
 }
 
-.left-side p {
+.msg-container-right, .msg-container-left {
+    border-radius: 6px;
+    -webkit-box-shadow: 4px 9px 19px -2px rgba(0,0,0,0.66);
+    -moz-box-shadow: 4px 9px 19px -2px rgba(0,0,0,0.66);
+    box-shadow: 4px 9px 19px -2px rgba(0,0,0,0.66);
+    text-align: center;
+    padding: 0 15px 0 15px;
+    font-family: 'Cormorant', serif;
+    font-size: 1.2em;
+}
+.img-container-left, .img-container-right {
+    opacity: .7;
+}
+.img-container-right {
     order: 2;
+    flex-grow: 1;
+}
+
+.blank-spot-right {
+    order: 3; 
+    flex-grow: 1;   
+}
+
+.blank-spot-left {
+    order: 1;
+    flex-grow: 1;    
+}
+.img-container-left {
+    order: 2;    
+    flex-grow: 1;
+}
+
+.msg-container-right {
+    order: 3;
+    flex-grow: 1;
+    background: rgba(600,248,255, .6);
+}
+
+.msg-parent div.blank-spot-left, .msg-parent div.blank-spot-right {
+  width: 50px;
+}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 80%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+}
+
+/* The Close Button */
+.close {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header {
+    padding: 2px 16px;
+    background-color: rgb(100,149,237);
+    color: white;
+    text-align: center;
+}
+
+.modal-header h1 {
+    font-family: 'Permanent Marker', cursive, serif;
+}
+
+.modal-body {padding: 2px 16px;}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+    from {top: -300px; opacity: 0} 
+    to {top: 0; opacity: 1}
+}
+
+@keyframes animatetop {
+    from {top: -300px; opacity: 0}
+    to {top: 0; opacity: 1}
+}
+
+.user-content div {
+    font-family: 'Roboto', sans-serif;
+    margin: 20px 10px 0 10px;
+    border-width: 0 0 1px 0;
+    border-bottom-color: black;
+    border-style: solid;
+    padding-bottom: 18px;
+}
+
+div.user-content div:last-child {
+    border-width: 0;
+}
+
+span.modal-full-name, span.modal-region, span.modal-gender {
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+span.name-text, span.region-text, span.gender-text {
+    font-size: 1.2em;
 }

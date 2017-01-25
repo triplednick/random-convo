@@ -21,22 +21,17 @@ const axios = require('axios');
     const util = {};
     
     util.getImgURL = (chatterData) => {
-        console.log('made it to getImgURL');
         const finalURL = AVATAR_URL + PIXEL_SIZE + chatterData.name + chatterData.surname + chatterData.region;
-        console.log('getImgURL: ' + finalURL);
         return finalURL;
     };
 
     util.getSentence = () => {
-        console.log('made it to getSentence');
-
+        
         return new Promise(function(resolve, reject) {
 
-            const numWords = Math.floor(Math.random() * (20 - 3) + 3);
+            const numWords = Math.floor(Math.random() * (12 - 8) + 8);
             const words = [];
-            let sentence = ''
-            
-            console.log('numWords length: ' + numWords);
+            let sentence = '';
             
             for(let i = 0; i < numWords; i++) {
                 const getWord = axios.get(WORD_URL);
@@ -50,7 +45,6 @@ const axios = require('axios');
 
             setTimeout(function() {
                 const finalStr = words.join(' ') + '.';
-                console.log('final string: ' + finalStr);
                 resolve(finalStr);
             }, 300);
             
