@@ -17,7 +17,7 @@ node server.js
 ```
 After the server is running hit the web application by typing this following url in the browser:
 ```
-http://localhost:8080/
+http://localhost:8082/
 ```
 
 ## App Functionality
